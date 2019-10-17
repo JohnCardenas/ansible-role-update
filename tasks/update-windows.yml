@@ -1,0 +1,13 @@
+---
+- name: (Windows) Install Updates
+  win_updates:
+    reboot: no
+    state: installed
+  register: updates_installed
+
+- name: (Windows) Reboot and Reconnect
+  win_reboot:
+    pre_reboot_delay: 15
+    post_reboot_delay: 60
+    reboot_timeout: 3600
+  when: updates_installed.reboot_required
