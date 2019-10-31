@@ -1,16 +1,16 @@
 ---
 # tasks file for update
 - import_tasks: update-ubuntu.yml
-  when: ansible_facts['distribution'] == 'Ubuntu'
+  when: ansible_distribution == "Ubuntu"
   tags:
     - update
 
-- import_tasks: update-centos.yml
-  when: ansible_facts['distribution'] == 'CentOS'
+- import_tasks: update-centos7.yml
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags:
     - update
 
 - import_tasks: update-windows.yml
-  when: ansible_facts['os_family'] == 'Windows'
+  when: ansible_os_family == "Windows"
   tags:
     - update

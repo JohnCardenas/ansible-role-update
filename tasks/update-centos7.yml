@@ -1,27 +1,28 @@
 ---
-- name: (CentOS) Install yum-utils
+- name: Install yum-utils
   yum:
     name: yum-utils
     state: present
 
-- name: (CentOS) Install Updated Packages
+- name: Update Installed Packages
   yum:
     name: "*"
     state: latest
+    update_cache: true
 
-- name: (CentOS) Check if Reboot Required
+- name: Check if Reboot Required
   shell: needs-restarting -r
   register: reboot_required
   failed_when: reboot_required.rc > 1
   changed_when: false
 
-- name: (CentOS) Reboot
+- name: Reboot
   shell: sleep 10 && /sbin/shutdown -r now 'Rebooting for System Update'
   async: 300
   poll: 0
   when: reboot_required.rc == 1
 
-- name: (CentOS) Wait for Reconnection
+- name: Wait for Reconnection
   wait_for_connection:
     delay: 60
     timeout: 1800
