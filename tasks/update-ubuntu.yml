@@ -1,22 +1,22 @@
 ---
-- name: (Ubuntu) Install Updated Packages
+- name: Update Installed Packages
   apt:
     update_cache: yes
     upgrade: dist
     autoremove: yes
 
-- name: (Ubuntu) Check if Reboot Required
+- name: Check if Reboot Required
   stat:
     path: /var/run/reboot-required
   register: reboot_required
 
-- name: (Ubuntu) Reboot
+- name: Reboot
   shell: sleep 10 && /sbin/shutdown -r now 'Rebooting for System Update'
   async: 300
   poll: 0
   when: reboot_required.stat.exists
 
-- name: (Ubuntu) Wait for Reconnection
+- name: Wait for Reconnection
   wait_for_connection:
     delay: 60
     timeout: 1800
